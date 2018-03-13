@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Mapa Colaborativo de Atores Urbanos de São Paulo</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link href="~/css/site.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/style-mapa-colaborativo.css" />
+        <link rel="stylesheet" href="~/css/style.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <header>
+        <div class="inner">
+            <div class="wrapper">
+                <ul>
+                    <li id="first" style="float:right">
+                        <img src="http://mapacolaborativo.gestaourbana.prefeitura.sp.gov.br/wp-content/themes/mapacolaborativo-1.0/images/logo_prefeitura_sem_smdu.jpg" />
+                    </li>
+                    <li id="second" style="float:right">
+                        <a href="http://mapacolaborativo.gestaourbana.prefeitura.sp.gov.br" title="home"><img src="http://mapacolaborativo.gestaourbana.prefeitura.sp.gov.br/wp-content/themes/mapacolaborativo-1.0/images/logo_gestao.jpg" /></a>
+                    </li>
+                </ul>
+            </div>
+            <h2>
+                <span class="tituloPlataforma">Mapa colaborativo de atores urbanos de São Paulo</span>
+            </h2>
+            <div class="clear"></div>
+        </div>
+    </header>
+
+    <div>
+        @RenderBody()
+        <hr />
+        <footer>
+            <div class="wrapper">
+                <div class="footer-col">
+                    <div class="footer-row">
+                        <!--<img src="/images/logo-gestao_urbana.png">-->
+                        <img src="http://mapacolaborativo.gestaourbana.prefeitura.sp.gov.br/wp-content/themes/mapacolaborativo-1.0/images/logo_gestao_footer.jpg">
+                    </div>
+                    <div class="footer-row">
+                        <!--<img src="/images/logo-prefeitura.png">-->
+                        <!--<img src="/images/logo_smdu_footer.jpg">-->
+                        <img src="http://mapacolaborativo.gestaourbana.prefeitura.sp.gov.br/wp-content/themes/mapacolaborativo-1.0/images/logo_prefeitura_sem_smdu_footer.jpg">
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <div class="footer-row contato">
+                        Secretaria Municipal de Urbanismo e Licenciamento (SMUL)<br>
+                        Prefeitura de São Paulo<br>
+                        Rua São Bento, 405, Centro - 18º andar<br>
+                        CEP 01011-100 - São Paulo - SP<br>
+                        Telefone: (11) 3113 7500<br>
+                        <p>&copy; 2018</p>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <div class="footer-row">
+                        <div class="left label">
+                            Redes sociais:
+                        </div>
+                        <div class="left social-buttons">
+                            <a href="https://www.facebook.com/PrefSP.smul" target="_blank"><img src="http://mapacolaborativo.gestaourbana.prefeitura.sp.gov.br/wp-content/themes/mapacolaborativo-1.0/images/btn-facebook-27x27.png"></a>
+                            <a href="https://twitter.com/PrefSP_smul" target="_blank"><img src="http://mapacolaborativo.gestaourbana.prefeitura.sp.gov.br/wp-content/themes/mapacolaborativo-1.0/images/btn-twitter-27x27.png"></a>
+                            <a href="http://www.youtube.com/user/pmspsmdu" target="_blank"><img src="http://mapacolaborativo.gestaourbana.prefeitura.sp.gov.br/wp-content/themes/mapacolaborativo-1.0/images/icon-youtube.png"></a>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="footer-row contato">
+                        <!--<p style="font-size: 12px">Todo o conteúdo do site está disponível sob licença <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.pt_BR" target="_blank">Creative Commons.</a> O código deste site é livre, consulte nossa página sobre <a href="/index.php/desenvolvimento">desenvolvimento</a>.</p>-->
+                        <!--<p style="font-size: 12px">Todo o conteúdo do site está disponível sob licença Creative Commons. Acesse a página <a href="http://mapacolaborativo.gestaourbana.prefeitura.sp.gov.br/index.php/desenvolvimento">Desenvolvimento</a> e saiba mais.</p>-->
+                        Todo o conteúdo do site está disponível sob licença Creative Commons. Acesse a página <a href="http://mapacolaborativo.gestaourbana.prefeitura.sp.gov.br/index.php/desenvolvimento">Desenvolvimento</a> e saiba mais.
+                        <!--<p style="font-size: 12px">Este site é um Software Livre sob licença "AGPL v3" e seu conteúdo está sob a licença “Atribuição-CompartilhaIgual 3.0 Não Adaptada (CC BY-SA 3.0)”. Acesse a página <a href="/index.php/desenvolvimento">Desenvolvimento</a> e saiba mais.</p>-->
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </footer>
+    </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+

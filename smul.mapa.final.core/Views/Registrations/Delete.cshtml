@@ -1,0 +1,123 @@
+﻿@model smul.mapa.final.core.Models.Registration
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Registration</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NomeInstituicao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NomeInstituicao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TelefoneFixo)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TelefoneFixo)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TelefoneCelular)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TelefoneCelular)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Site)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Site)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ProfileFacebook)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ProfileFacebook)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NomeRepresentante)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NomeRepresentante)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Rua)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Rua)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Numero)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Numero)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CEP)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CEP)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PrefeituraRegional)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PrefeituraRegional)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Segmento)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Segmento)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Tematica)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tematica)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TempoDeAtucao)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TempoDeAtucao)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Registro)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Registro)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Lat)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Lat)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Lng)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Lng)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

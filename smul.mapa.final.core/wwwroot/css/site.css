@@ -1,0 +1,34 @@
+﻿#divBusca {
+    background-color: #E0EEEE;
+    border: solid 2px red;
+    border-radius: 10px;
+    width: 300px;
+    height: 32px;
+    float:right;
+}
+
+#txtBusca {
+    float: left;
+    background-color: transparent;
+    padding-left: 5px;
+    font-size: 18px;
+    border: none;
+    height: 32px;
+    width: 191px;
+}
+
+#btnBusca {
+    border: none;
+    float: left;
+    height: 32px;
+    border-radius: 0 8px 8px 0;
+    width: 70px;
+    font-weight: bold;
+    background: red;
+}
+
+#divBusca img {
+    float: left;
+    height:30px;
+    width: 33px;
+}

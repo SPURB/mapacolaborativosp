@@ -1,0 +1,403 @@
+﻿@model smul.mapa.final.core.Models.Registration
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div>
+    <fieldset>
+        <!--<legend style="font-family:Arial Black; color:gray;font-size:large">Cidade de São Paulo</legend>-->
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <!-- <div id="divBusca">
+            <img src="~/images/active-search-xxl.png" alt="Buscar..." />
+            <input type="text" id="txtBusca" placeholder="Buscar..." />
+            <button id="btnBusca">Buscar</button>
+        </div>-->
+
+        <div id="googleMap"></div>
+        <script>
+
+            var src =
+                "http://www.prefeitura.sp.gov.br/cidade/secretarias/upload/saude/arquivos/infambiental/DistritosAdministrativos.kmz";
+
+
+            $(function () {
+                $("#CEP").change(function () {
+
+                    var cep = this.value;
+
+                    $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+
+                        if (!("erro" in dados)) {
+                            //Atualiza os campos com os valores da consulta.
+                            $("#Rua").val(dados.logradouro);
+
+
+                            var address = dados.logradouro + ', ' + $("#Numero").val() + ' - ' + dados.bairro + ', ' + dados.localidade + ' - ' + dados.uf + ', ' + cep;
+
+                            converteEndereco(address, function (marcador) {
+                                $("#Lat").val(marcador.latitude.toString().replace('.', '.'));
+                                $("#Lng").val(marcador.longitude.toString().replace('.', '.'));
+                            });
+
+                        } //end if.
+                        else {
+
+                            alert("CEP não encontrado.");
+                        }
+                    });
+
+                })
+
+            })
+
+            function converteEndereco(endereco, callback) {
+                var geocoder = new google.maps.Geocoder();
+
+                geocoder.geocode({ 'address': endereco }, function (resultado, status) {
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        var marcador = {
+                            latitude: resultado[0].geometry.location.lat()
+                            , longitude: resultado[0].geometry.location.lng()
+
+                        }
+                        callback(marcador);
+                    } else {
+                        alert('Erro ao converter endereço: ' + status);
+                    }
+                });
+            }
+
+
+            function get() {
+                $.ajax({
+                    type: "GET",
+                    url: "api/Registrations",
+                    success: function (data) {
+
+                        myMap(data);
+
+                    },
+                    error: function () {
+                        console.log("danger", "Erro ao cadastrar!");
+                    }
+                });
+
+            }
+
+            /*
+            * myMap recebe o argumento data da função get logo acima
+            * data contem os dados do banco de dados
+            * A função myMap monta o marcador e a infoWindow de cada marcador
+            **/
+            var map;
+            var infoWindow;
+            function myMap(registrations) {
+                
+                var mapProp = {
+                    center: { lat: -23.5507233, lng: -46.6348329 }, zoom: 10, draggable: true, disableDefaultUI: true, mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+                infoWindow = new google.maps.InfoWindow();
+                google.maps.event.addListener(map, 'click', function () {
+                    infoWindow.close();
+
+                });
+
+
+                let contentString = [];
+
+                //aqui monta o marcador
+                for (var i in registrations) {
+                    var reg = registrations[i];
+
+                    let center = { lat: parseFloat(reg.lat), lng: parseFloat(reg.lng) };
+
+                    let marker = new google.maps.Marker({
+                        position: center,
+                        draggable: false,
+                        animation: google.maps.Animation.DROP,
+                        title: reg.nomeInstituicao,
+                        segmento: reg.segmento,
+                        telFixo: reg.telefoneFixo,
+                        email: reg.email,
+                        site: reg.site,
+                        facebook: reg.profileFacebook,
+                        visible: true,
+                        map: map
+                    });
+
+
+                    google.maps.event.addListener(marker, 'click', function () {
+                        contentString[i] =
+                            '<div id="content"' +
+                            '<h1 id="firstHeading"><strong>' + marker.segmento + '</strong></h1>' +
+                            '<hr>' +
+                            '<div id="bodyContent">'
+                            + '<p>' + marker.title + '</p>' + '<br/>'
+                            + '<p>' + marker.telFixo + '</p>' + '<br/>'
+                            + '<p>' + marker.email + '</p>' + '<br/>'
+                            + '<p><a>' + marker.site + '</a></p>' + '<br/>'
+                            + '<p><a>' + marker.facebook + '</a></p>' + '<br/>'
+
+                            + '</div>'
+                        '</div>';
+
+                        infoWindow.setContent(contentString[i]);
+                        infoWindow.open(map, marker);
+
+
+
+                    });
+                    
+
+                    if (reg.segmento == "Poder Publico") {
+                        marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
+
+
+                    } else if (reg.segmento == "Associação") {
+                        marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+
+
+                    } else if (reg.segmento == "Universidade") {
+                        marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+
+
+                    } else if (reg.segmento == "Entidades") {
+                        marker.setIcon('http://maps.google.com/mapfiles/ms/icons/purple-dot.png');
+
+                    } else if (reg.segmento == "ONG") {
+                        marker.setIcon('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png');
+
+
+                    } else if (reg.segmento == "Movimentos") {
+                        marker.setIcon('https://maps.google.com/mapfiles/ms/icons/orange-dot.png');
+
+                    }
+
+                }
+
+                console.log(src);
+                let kmlLayer = new google.maps.KmlLayer(src, {
+                    suppressInfoWindows: true,
+                    preserveViewport: true,
+                    map: map
+
+                });
+                kmlLayer.addListener('click', function (event) {
+                    var content = event.featureData.infoWindowHtml;
+                    var testimonial = document.getElementById('capture');
+                    testimonial.innerHTML = content;
+
+                });
+            }
+
+
+
+
+
+
+
+
+
+
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBgpps7pi5e3otS0Z3HK4e37CDFvLLKGTc&callback=get"></script>
+
+    </fieldset>
+</div>
+<div id="sidenav">
+    <div class="BotaoApoiarVermelho BotoesMenu popmake-252 pum-trigger" id="botoesMenuPlataforma1" style="cursor: pointer;" data-toggle="modal" data-target="#modal-apresentacao">
+        <label class="unselectable">Apresentação</label>
+    </div>
+    <div class="BotaoApoiarVermelho BotoesMenu popmake-159 pum-trigger" id="botoesMenuPlataforma2" style="cursor: pointer;" data-toggle="modal" data-target="#modal-cadastro">
+        <label class="unselectable">Cadastre-se</label>
+    </div>
+
+</div>
+
+<div class="modal fade" id="modal-apresentacao">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>X</span></button>
+                <h4 class="modal-title">Apresentação</h4>
+            </div>
+            <div class="modal-body">
+                <h1>Texto explicativo sobre o  Mapa Aqui!</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-cadastro">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>X</span></button>
+                <h4 class="modal-title">Cadastro</h4>
+            </div>
+            <div class="modal-body">
+                <section id="formulario">
+                    <form asp-action="Create">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="NomeInstituicao" class="control-label"></label>
+                            <input asp-for="NomeInstituicao" class="form-control" />
+                            <span asp-validation-for="NomeInstituicao" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TelefoneFixo" class="control-label"></label>
+                            <input asp-for="TelefoneFixo" class="form-control" />
+                            <span asp-validation-for="TelefoneFixo" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TelefoneCelular" class="control-label"></label>
+                            <input asp-for="TelefoneCelular" class="form-control" />
+                            <span asp-validation-for="TelefoneCelular" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Site" class="control-label"></label>
+                            <input asp-for="Site" class="form-control" />
+                            <span asp-validation-for="Site" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ProfileFacebook" class="control-label"></label>
+                            <input asp-for="ProfileFacebook" class="form-control" />
+                            <span asp-validation-for="ProfileFacebook" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="NomeRepresentante" class="control-label"></label>
+                            <input asp-for="NomeRepresentante" class="form-control" />
+                            <span asp-validation-for="NomeRepresentante" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="CEP" class="control-label"></label>
+                            <input asp-for="CEP" class="form-control" />
+                            <span asp-validation-for="CEP" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Rua" class="control-label"></label>
+                            <input asp-for="Rua" class="form-control" />
+                            <span asp-validation-for="Rua" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Numero" class="control-label"></label>
+                            <input asp-for="Numero" class="form-control" />
+                            <span asp-validation-for="Numero" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group hidden">
+                            <label asp-for="Lat" class="control-label"></label>
+                            <input asp-for="Lat" class="form-control" />
+                            <span asp-validation-for="Lat" class="text-danger"></span>
+                        </div>
+                        <div class="form-group hidden">
+                            <label asp-for="Lng" class="control-label"></label>
+                            <input asp-for="Lng" class="form-control" />
+                            <span asp-validation-for="Lng" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="PrefeituraRegional" class="control-label"></label>
+                            <select class="form-control" id="InputPrefReg" name="PrefeituraRegional">
+                                <option>Selecione uma opção</option>
+                                <option>Perus</option>
+                                <option>Pirituba</option>
+                                <option>Freguesia / Brasilândia</option>
+                                <option>Casa Verde / Cachoeirinha</option>
+                                <option>Santana / Tucuruvi</option>
+                                <option>Jaçanã / Tremembé</option>
+                                <option>Vila Maria / Vila Guilherme</option>
+                                <option>Lapa</option>
+                                <option>Sé</option>
+                                <option>Butantã</option>
+                                <option>Pinheiros</option>
+                                <option>Vila Mariana</option>
+                                <option>Ipiranga</option>
+                                <option>Santo Amaro</option>
+                                <option>Jabaquara</option>
+                                <option>Cidade Ademar</option>
+                                <option>Campo Limpo</option>
+                                <option>M'Boi Mirim</option>
+                                <option>Capela do Socorro</option>
+                                <option>Parelheiros</option>
+                                <option>Penha</option>
+                                <option>Ermelino Matarazzo</option>
+                                <option>São Miguel</option>
+                                <option>Itaim Paulista</option>
+                                <option>Mooca</option>
+                                <option>Aricanduva / Vila Formosa / Carrão</option>
+                                <option>Itaquera</option>
+                                <option>Guaianases</option>
+                                <option>Vila Prudente</option>
+                                <option>São Mateus</option>
+                                <option>Cidade Tiradentes</option>
+                                <option>Sapopemba</option>
+                            </select>
+                            <span asp-validation-for="PrefeituraRegional" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Segmento" class="control-label"></label>
+                            <select id="InputSegmento" class="form-control" name="Segmento">
+                                <option>Selecione uma opção</option>
+                                <option>Associação</option>
+                                <option>Universidade</option>
+                                <option>Entidades</option>
+                                <option>ONG</option>
+                                <option>Movimentos</option>
+                            </select>
+                            <span asp-validation-for="Segmento" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Tematica" class="control-label"></label>
+                            <select id="InputTematica" class="form-control" name="Tematica">
+                                <option>Selecione uma opção</option>
+                                <option>Publica</option>
+                                <option>Privada</option>
+                                <option>Mobilidade</option>
+                                <option>Moradia</option>
+                                <option>Meio Ambiente</option>
+                                <option>Cultura</option>
+                                <option>Inclusão</option>
+                                <option>Profissional</option>
+                                <option>Empresarial</option>
+                                <option>Religiosa</option>
+                            </select>
+                            <span asp-validation-for="Tematica" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TempoDeAtucao" class="control-label"></label>
+                            <input asp-for="TempoDeAtucao" class="form-control" />
+                            <span asp-validation-for="TempoDeAtucao" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Registro" class="control-label"></label>
+                            <input asp-for="Registro" class="form-control" />
+                            <span asp-validation-for="Registro" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="submit" value="Cadastrar" class="btn btn-success" />
+                        </div>
+                    </form>
+
+                </section>
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+

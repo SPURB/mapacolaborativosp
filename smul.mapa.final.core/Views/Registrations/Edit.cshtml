@@ -1,0 +1,116 @@
+﻿@model smul.mapa.final.core.Models.Registration
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Registration</h4>
+<hr />
+<div>
+    <div class="container-fluid">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ID" />
+            <div class="form-group">
+                <label asp-for="NomeInstituicao" class="control-label"></label>
+                <input asp-for="NomeInstituicao" class="form-control" />
+                <span asp-validation-for="NomeInstituicao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TelefoneFixo" class="control-label"></label>
+                <input asp-for="TelefoneFixo" class="form-control" />
+                <span asp-validation-for="TelefoneFixo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TelefoneCelular" class="control-label"></label>
+                <input asp-for="TelefoneCelular" class="form-control" />
+                <span asp-validation-for="TelefoneCelular" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Site" class="control-label"></label>
+                <input asp-for="Site" class="form-control" />
+                <span asp-validation-for="Site" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProfileFacebook" class="control-label"></label>
+                <input asp-for="ProfileFacebook" class="form-control" />
+                <span asp-validation-for="ProfileFacebook" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NomeRepresentante" class="control-label"></label>
+                <input asp-for="NomeRepresentante" class="form-control" />
+                <span asp-validation-for="NomeRepresentante" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rua" class="control-label"></label>
+                <input asp-for="Rua" class="form-control" />
+                <span asp-validation-for="Rua" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Numero" class="control-label"></label>
+                <input asp-for="Numero" class="form-control" />
+                <span asp-validation-for="Numero" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CEP" class="control-label"></label>
+                <input asp-for="CEP" class="form-control" />
+                <span asp-validation-for="CEP" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PrefeituraRegional" class="control-label"></label>
+                <input asp-for="PrefeituraRegional" class="form-control" />
+                <span asp-validation-for="PrefeituraRegional" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Segmento" class="control-label"></label>
+                <input asp-for="Segmento" class="form-control" />
+                <span asp-validation-for="Segmento" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tematica" class="control-label"></label>
+                <input asp-for="Tematica" class="form-control" />
+                <span asp-validation-for="Tematica" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TempoDeAtucao" class="control-label"></label>
+                <input asp-for="TempoDeAtucao" class="form-control" />
+                <span asp-validation-for="TempoDeAtucao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Registro" /> @Html.DisplayNameFor(model => model.Registro)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lat" class="control-label"></label>
+                <input asp-for="Lat" class="form-control" />
+                <span asp-validation-for="Lat" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lng" class="control-label"></label>
+                <input asp-for="Lng" class="form-control" />
+                <span asp-validation-for="Lng" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
