@@ -166,7 +166,7 @@ namespace smul.mapa.final.core.Controllers
         {
 
             string sWebRootFolder = _hostingEnvironment.WebRootPath;
-            string sFileName = @"Atores_Urbanos.xlsx";
+            string sFileName = @"Atores_Urbanos.xlsm";
             string URL = string.Format("{0}://{1}/{2}", Request.Scheme, Request.Host, sFileName);
             FileInfo file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
             var memory = new MemoryStream();
